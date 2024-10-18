@@ -1,7 +1,8 @@
 package calculadora.tela;
 
 import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import javax.swing.JPanel;
 
 public class Teclado extends JPanel {
@@ -11,33 +12,73 @@ public class Teclado extends JPanel {
 
     public Teclado() {
         // setBackground(Color.RED);
-        setLayout(new GridLayout(5, 4));
 
-        add(new Botao("AC", COR_CINZA_ESCURO));
-        add(new Botao("+/-", COR_CINZA_ESCURO));
-        add(new Botao("%", COR_CINZA_ESCURO));
-        add(new Botao("/", COR_LARANJA));
+        GridBagLayout gridBagLayout = new GridBagLayout();
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
 
-        add(new Botao("7", COR_CINZA_CLARO));
-        add(new Botao("8", COR_CINZA_CLARO));
-        add(new Botao("9", COR_CINZA_CLARO));
-        add(new Botao("X", COR_LARANJA));
+        setLayout(gridBagLayout);
 
-        add(new Botao("4", COR_CINZA_CLARO));
-        add(new Botao("5", COR_CINZA_CLARO));
-        add(new Botao("6", COR_CINZA_CLARO));
-        add(new Botao("-", COR_LARANJA));
+        // linha 1
+        adicionarBotaoTela("AC", COR_CINZA_CLARO, gridBagConstraints, 0, 0);
+        adicionarBotaoTela("+/-", COR_CINZA_CLARO, gridBagConstraints, 1, 0);
+        adicionarBotaoTela("%", COR_CINZA_CLARO, gridBagConstraints, 2, 0);
+        adicionarBotaoTela("/", COR_LARANJA, gridBagConstraints, 3, 0);
 
-        add(new Botao("1", COR_CINZA_CLARO));
-        add(new Botao("2", COR_CINZA_CLARO));
-        add(new Botao("3", COR_CINZA_CLARO));
-        add(new Botao("+", COR_LARANJA));
+        // linha 2
+        adicionarBotaoTela("7", COR_CINZA_CLARO, gridBagConstraints, 0, 1);
+        adicionarBotaoTela("8", COR_CINZA_CLARO, gridBagConstraints, 1, 1);
+        adicionarBotaoTela("9", COR_CINZA_CLARO, gridBagConstraints, 2, 1);
+        adicionarBotaoTela("X", COR_LARANJA, gridBagConstraints, 3, 1);
 
-        add(new Botao("0", COR_CINZA_CLARO));
-        add(new Botao("0", COR_CINZA_CLARO));
-        add(new Botao(",", COR_CINZA_CLARO));
-        add(new Botao("=", COR_LARANJA));
+        // linha 3
+        adicionarBotaoTela("4", COR_CINZA_CLARO, gridBagConstraints, 0, 2);
+        adicionarBotaoTela("5", COR_CINZA_CLARO, gridBagConstraints, 1, 2);
+        adicionarBotaoTela("6", COR_CINZA_CLARO, gridBagConstraints, 2, 2);
+        adicionarBotaoTela("-", COR_LARANJA, gridBagConstraints, 3, 2);
 
+        // linha 4
+        adicionarBotaoTela("1", COR_CINZA_CLARO, gridBagConstraints, 0, 3);
+        adicionarBotaoTela("2", COR_CINZA_CLARO, gridBagConstraints, 1, 3);
+        adicionarBotaoTela("3", COR_CINZA_CLARO, gridBagConstraints, 2, 3);
+        adicionarBotaoTela("+", COR_LARANJA, gridBagConstraints, 3, 3);
 
+        // linha 5
+        adicionarBotaoTela("0", COR_CINZA_CLARO, gridBagConstraints, 0, 4);
+        adicionarBotaoTela("0", COR_CINZA_CLARO, gridBagConstraints, 1, 4);
+        adicionarBotaoTela(",", COR_CINZA_CLARO, gridBagConstraints, 2, 4);
+        adicionarBotaoTela("=", COR_LARANJA, gridBagConstraints, 3, 4);
+
+        // add(new Botao("AC", COR_CINZA_ESCURO), gridBagConstraints);
+        // add(new Botao("+/-", COR_CINZA_ESCURO), gridBagConstraints);
+        // add(new Botao("%", COR_CINZA_ESCURO), gridBagConstraints);
+        // add(new Botao("/", COR_LARANJA), gridBagConstraints);
+
+        // add(new Botao("7", COR_CINZA_CLARO), gridBagConstraints);
+        // add(new Botao("8", COR_CINZA_CLARO), gridBagConstraints);
+        // add(new Botao("9", COR_CINZA_CLARO), gridBagConstraints);
+        // add(new Botao("X", COR_LARANJA), gridBagConstraints);
+
+        // add(new Botao("4", COR_CINZA_CLARO), gridBagConstraints);
+        // add(new Botao("5", COR_CINZA_CLARO), gridBagConstraints);
+        // add(new Botao("6", COR_CINZA_CLARO), gridBagConstraints);
+        // add(new Botao("-", COR_LARANJA), gridBagConstraints);
+
+        // add(new Botao("1", COR_CINZA_CLARO), gridBagConstraints);
+        // add(new Botao("2", COR_CINZA_CLARO), gridBagConstraints);
+        // add(new Botao("3", COR_CINZA_CLARO), gridBagConstraints);
+        // add(new Botao("+", COR_LARANJA), gridBagConstraints);
+
+        // add(new Botao("0", COR_CINZA_CLARO), gridBagConstraints);
+        // add(new Botao("0", COR_CINZA_CLARO), gridBagConstraints);
+        // add(new Botao(",", COR_CINZA_CLARO), gridBagConstraints);
+        // add(new Botao("=", COR_LARANJA), gridBagConstraints);
+
+    }
+
+    public void adicionarBotaoTela(String text, Color color, GridBagConstraints gridBagConstraints, int x, int y) {
+        gridBagConstraints.gridx = x;
+        gridBagConstraints.gridy = y;
+        Botao botao = new Botao(text, color);
+        add(botao, gridBagConstraints);
     }
 }
