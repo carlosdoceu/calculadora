@@ -1,6 +1,7 @@
 package calculadora.back;
 
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,9 @@ public class Memoria {
 
     private static Memoria instancia = new Memoria();
     private String textoAtual = "";
+    private String buffer = "";
+    private boolean substituir = false;
+    private TipoComando comandoOperacao = null;
 
     private enum TipoComando {
         ZERAR, NUMERO, DIV, MULT, SUB, SOMA, IGUAL, VIRGULA;
@@ -28,12 +32,20 @@ public class Memoria {
 
         TipoComando tipoComando = detectarTipoComando(texto);
 
-        System.out.println(tipoComando);
-
-        if ("ac".equalsIgnoreCase(texto)) {
+        // System.out.println(tipoComando);
+        if (tipoComando == null) {
+            return;
+        } else if (tipoComando == TipoComando.ZERAR) {
             textoAtual = "";
-        } else {
-            textoAtual += texto;
+            buffer = "";
+            substituir = false;
+            comandoOperacao = null;
+        } else if (tipoComando == TipoComando.NUMERO || tipoComando == TipoComando.VIRGULA) {
+            textoAtual = substituir ? texto : textoAtual + texto;
+            substituir = false;
+        }else if (tipoComando == TipoComando.NUMERO || tipoComando == TipoComando.SOMA) {
+            float resultado = Float.parseFloat(texto) + Float.parseFloat(texto) ;
+            System.out.println("valor div"+resultado);
         }
 
         listObeserver.forEach(observer -> observer.valorAlterado(getTextoAtual()));
@@ -51,29 +63,25 @@ public class Memoria {
 
         } catch (NumberFormatException e) {
             switch (texto) {
-                
-                case "AC":
-                    return TipoComando.ZERAR;
-                    
-                case "+":
-                    return TipoComando.SOMA;
-                    
-                case "-":
-                    return TipoComando.SUB;
-                    
-                case "X":
-                    return TipoComando.MULT;
-                    
-                case "/":
-                    return TipoComando.DIV;
-                    
-                case "=":
-                    return TipoComando.IGUAL;
-                case ",":
+            case "AC":
+                return TipoComando.ZERAR;
+            case "+":
+                return TipoComando.SOMA;
+            case "-":
+                return TipoComando.SUB;
+            case "X":
+                return TipoComando.MULT;
+            case "/":
+                return TipoComando.DIV;
+            case "=":
+                return TipoComando.IGUAL;
+            case "," :
+                if (!textoAtual.contains(",")) { // so vai adicionar virgula se campo não tiver virgula 
                     return TipoComando.VIRGULA;
-                    
+                }
+
             }
-          
+
         }
         return null;
 
