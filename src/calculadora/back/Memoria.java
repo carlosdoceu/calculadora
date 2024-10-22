@@ -1,16 +1,21 @@
 package calculadora.back;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Memoria {
 
-    private static  Memoria instancia = new Memoria();
+    private static Memoria instancia = new Memoria();
     private String textoAtual = "";
 
-    //singleton
-    private Memoria(){
-        
+    private enum TipoComando {
+        ZERAR, NUMERO, DIV, MULT, SUB, SOMA, IGUAL, VIRGULA;
+    }
+
+    // singleton
+    private Memoria() {
+
     }
 
     private final List<MemoriaObserver> listObeserver = new ArrayList<>();
@@ -19,14 +24,60 @@ public class Memoria {
         listObeserver.add(observer);
     }
 
-    public void processarComando(String valor){
-        textoAtual += valor;
-        if("ac".equalsIgnoreCase(valor)){
+    public void processarComando(String texto) {
+
+        TipoComando tipoComando = detectarTipoComando(texto);
+
+        System.out.println(tipoComando);
+
+        if ("ac".equalsIgnoreCase(texto)) {
             textoAtual = "";
+        } else {
+            textoAtual += texto;
         }
+
         listObeserver.forEach(observer -> observer.valorAlterado(getTextoAtual()));
     }
 
+    private TipoComando detectarTipoComando(String texto) {
+
+        if (textoAtual.isEmpty() && texto == "0") {
+            return null;
+        }
+
+        try {
+            Integer.parseInt(texto);
+            return TipoComando.NUMERO;
+
+        } catch (NumberFormatException e) {
+            switch (texto) {
+                
+                case "AC":
+                    return TipoComando.ZERAR;
+                    
+                case "+":
+                    return TipoComando.SOMA;
+                    
+                case "-":
+                    return TipoComando.SUB;
+                    
+                case "X":
+                    return TipoComando.MULT;
+                    
+                case "/":
+                    return TipoComando.DIV;
+                    
+                case "=":
+                    return TipoComando.IGUAL;
+                case ",":
+                    return TipoComando.VIRGULA;
+                    
+            }
+          
+        }
+        return null;
+
+    }
 
     public static Memoria getInstancia() {
         return instancia;
@@ -69,7 +120,4 @@ public class Memoria {
         return true;
     }
 
-
-
 }
-
