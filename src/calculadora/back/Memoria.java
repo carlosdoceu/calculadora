@@ -1,5 +1,8 @@
 package calculadora.back;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Memoria {
 
     private static  Memoria instancia = new Memoria();
@@ -9,6 +12,21 @@ public class Memoria {
     private Memoria(){
         
     }
+
+    private final List<MemoriaObserver> listObeserver = new ArrayList<>();
+
+    public void adicionarObserver(MemoriaObserver observer) {
+        listObeserver.add(observer);
+    }
+
+    public void processarComando(String valor){
+        textoAtual += valor;
+        if("ac".equalsIgnoreCase(valor)){
+            textoAtual = "";
+        }
+        listObeserver.forEach(observer -> observer.valorAlterado(getTextoAtual()));
+    }
+
 
     public static Memoria getInstancia() {
         return instancia;

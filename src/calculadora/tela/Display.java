@@ -14,6 +14,8 @@ public class Display extends JPanel  implements MemoriaObserver{
 
     public Display() {
         setBackground(new Color(37, 27, 47));
+
+        Memoria.getInstancia().adicionarObserver(this);
         
         label = new JLabel(Memoria.getInstancia().getTextoAtual());
         label.setForeground(Color.WHITE);
@@ -27,6 +29,6 @@ public class Display extends JPanel  implements MemoriaObserver{
 
     @Override
     public void valorAlterado(String novoValor) {
-
+        label.setText(novoValor);
     }
 }

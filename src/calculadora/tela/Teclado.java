@@ -1,5 +1,6 @@
 package calculadora.tela;
 
+import calculadora.back.Memoria;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -98,7 +99,7 @@ public class Teclado extends JPanel implements ActionListener {
         
         if (e.getSource() instanceof JButton) { 
             JButton botao = (JButton) e.getSource();      
-            System.out.println(botao.getText());
+            Memoria.getInstancia().processarComando(botao.getText());
         }
       
     }
