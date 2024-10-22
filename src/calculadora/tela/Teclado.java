@@ -3,9 +3,12 @@ package calculadora.tela;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
-public class Teclado extends JPanel {
+public class Teclado extends JPanel implements ActionListener {
     private final Color COR_CINZA_ESCURO = new Color(68, 68, 68);
     private final Color COR_CINZA_CLARO = new Color(99, 99, 99);
     private final Color COR_LARANJA = new Color(242, 163, 60);
@@ -17,11 +20,16 @@ public class Teclado extends JPanel {
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
 
         setLayout(gridBagLayout);
+        gridBagConstraints.weightx = 1;
+        gridBagConstraints.weighty = 1;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
 
         // linha 1
-        adicionarBotaoTela("AC", COR_CINZA_CLARO, gridBagConstraints, 0, 0);
-        adicionarBotaoTela("+/-", COR_CINZA_CLARO, gridBagConstraints, 1, 0);
-        adicionarBotaoTela("%", COR_CINZA_CLARO, gridBagConstraints, 2, 0);
+        gridBagConstraints.gridwidth = 3;
+        adicionarBotaoTela("AC", COR_CINZA_ESCURO, gridBagConstraints, 0, 0);
+        gridBagConstraints.gridwidth = 1;
+        // adicionarBotaoTela("+/-", COR_CINZA_ESCURO, gridBagConstraints, 1, 0);
+        // adicionarBotaoTela("%", COR_CINZA_ESCURO, gridBagConstraints, 2, 0);
         adicionarBotaoTela("/", COR_LARANJA, gridBagConstraints, 3, 0);
 
         // linha 2
@@ -43,8 +51,10 @@ public class Teclado extends JPanel {
         adicionarBotaoTela("+", COR_LARANJA, gridBagConstraints, 3, 3);
 
         // linha 5
+        gridBagConstraints.gridwidth = 2;
         adicionarBotaoTela("0", COR_CINZA_CLARO, gridBagConstraints, 0, 4);
-        adicionarBotaoTela("0", COR_CINZA_CLARO, gridBagConstraints, 1, 4);
+        gridBagConstraints.gridwidth = 1;
+        // adicionarBotaoTela("0", COR_CINZA_CLARO, gridBagConstraints, 1, 4);
         adicionarBotaoTela(",", COR_CINZA_CLARO, gridBagConstraints, 2, 4);
         adicionarBotaoTela("=", COR_LARANJA, gridBagConstraints, 3, 4);
 
@@ -79,6 +89,17 @@ public class Teclado extends JPanel {
         gridBagConstraints.gridx = x;
         gridBagConstraints.gridy = y;
         Botao botao = new Botao(text, color);
+        botao.addActionListener(this);
         add(botao, gridBagConstraints);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
+        if (e.getSource() instanceof JButton) { 
+            JButton botao = (JButton) e.getSource();      
+            System.out.println(botao.getText());
+        }
+      
     }
 }
