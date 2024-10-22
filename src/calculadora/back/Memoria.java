@@ -1,7 +1,5 @@
 package calculadora.back;
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +9,7 @@ public class Memoria {
     private String textoAtual = "";
     private String buffer = "";
     private boolean substituir = false;
-    private TipoComando comandoOperacao = null;
+    private TipoComando ultimaOperacao = null;
 
     private enum TipoComando {
         ZERAR, NUMERO, DIV, MULT, SUB, SOMA, IGUAL, VIRGULA;
@@ -32,23 +30,65 @@ public class Memoria {
 
         TipoComando tipoComando = detectarTipoComando(texto);
 
-        // System.out.println(tipoComando);
+        System.out.println(tipoComando);
         if (tipoComando == null) {
             return;
         } else if (tipoComando == TipoComando.ZERAR) {
             textoAtual = "";
             buffer = "";
             substituir = false;
-            comandoOperacao = null;
+            ultimaOperacao = null;
         } else if (tipoComando == TipoComando.NUMERO || tipoComando == TipoComando.VIRGULA) {
             textoAtual = substituir ? texto : textoAtual + texto;
             substituir = false;
-        }else if (tipoComando == TipoComando.NUMERO || tipoComando == TipoComando.SOMA) {
-            float resultado = Float.parseFloat(texto) + Float.parseFloat(texto) ;
-            System.out.println("valor div"+resultado);
+        } else {
+            substituir = true;
+            textoAtual = obterResultadoOperacao();
+            buffer = textoAtual;
+            ultimaOperacao = tipoComando;
         }
 
         listObeserver.forEach(observer -> observer.valorAlterado(getTextoAtual()));
+    }
+
+    private String obterResultadoOperacao() {
+        if (ultimaOperacao == null) {
+            return textoAtual;
+        }
+        double numeroBuffer = Double.parseDouble(buffer.replace(",", "."));
+        double numeroAtual = Double.parseDouble(textoAtual.replace(",", "."));
+
+        double resultado = 0;
+
+        // if (ultimaOperacao == TipoComando.SOMA) {
+        // resultado = numeroBuffer + numeroAtual;
+        // textoAtual = String.valueOf(resultado);
+        // }
+
+        switch (ultimaOperacao) {
+        case SOMA:
+            resultado = numeroBuffer + numeroAtual;
+            break;
+        case SUB:
+            resultado = numeroBuffer - numeroAtual;
+            break;
+        case MULT:
+            resultado = numeroBuffer * numeroAtual;
+            break;
+        case DIV:
+            resultado = numeroBuffer / numeroAtual;
+            break;
+        case IGUAL:
+            textoAtual = String.valueOf(resultado);
+            System.out.println(textoAtual);
+            break;
+
+        }
+        String resultadoToString = Double.toString(resultado).replace(".", ",");
+        boolean inteiro = resultadoToString.endsWith(",0");
+        return inteiro ? resultadoToString.replace(",0", "") : resultadoToString; // caso seja inteiro, remover o ",0" no final da string
+
+        
     }
 
     private TipoComando detectarTipoComando(String texto) {
@@ -75,8 +115,8 @@ public class Memoria {
                 return TipoComando.DIV;
             case "=":
                 return TipoComando.IGUAL;
-            case "," :
-                if (!textoAtual.contains(",")) { // so vai adicionar virgula se campo não tiver virgula 
+            case ",":
+                if (!textoAtual.contains(",")) { // so vai adicionar virgula se campo não tiver virgula
                     return TipoComando.VIRGULA;
                 }
 
