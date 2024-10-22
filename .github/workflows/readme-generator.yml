@@ -1,0 +1,29 @@
+name: Auto README Generator
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # permite rodar manualmente via GitHub
+
+jobs:
+  generate-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the repository
+      uses: actions/checkout@v3
+
+    - name: Generate README
+      uses: kdmukai/markdown-readme-generator@v1
+      with:
+        template: "README_template.md" # Opcional: pode usar um template personalizado
+        output: "README.md"
+    
+    - name: Commit changes
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add README.md
+        git commit -m "Auto-update README [skip ci]" || echo "No changes to commit"
+        git push
