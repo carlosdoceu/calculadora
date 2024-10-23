@@ -1,7 +1,7 @@
-# {{ repository.name }}
+# CALCULADORA
 
 ## Descrição
-{{ repository.description }}
+CALCULADORA BASICA UTILIZANDO JAVA
 
 ## Estrutura do projeto
 - `src/calcudora/back`: Lógica de memória da calculadora
